@@ -1,8 +1,8 @@
 package demo;
 
+import com.google.gson.Gson;
 import com.indico.IndicoConfig;
 import com.indico.IndicoKtorClient;
-import com.indico.query.ListWorkflows;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,10 +23,9 @@ public class Hello {
 
     public static void main(String[] args) throws IOException {
         try (var client = new IndicoKtorClient(loadConfig())) {
-            var listWorkflows = new ListWorkflows(client);
-            var workflows = listWorkflows.query();
-            for (var workflow : workflows) {
-                System.out.printf("workflow: id='%s' name='%s' reviewEnabled='%s'\n", workflow.id, workflow.name, workflow.reviewEnabled);
+            var submissions = client.listSubmissions().query();
+            for (var submission : submissions) {
+                System.out.println(new Gson().toJson(submission));
             }
         }
     }
